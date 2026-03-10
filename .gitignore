@@ -1,0 +1,26 @@
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+
+# Dependency directories
+node_modules/
+target/
+build/
+
+# Environment variables
+.env
+.venv/
+env/
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Compiled files
+__pycache__/
+*.pyc
+*.class
+*.exe
