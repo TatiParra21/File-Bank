@@ -34,8 +34,6 @@ app.get("/verify",async(req:Request,res:Response)=>{
             verification_code: null
         }
     })
-  ///const jwtToken =  jwt.sign({userId:user.id,email:user.email, },process.env.JWT_SECRET!,{expiresIn:"1d"})
-  //res.status(200).json({token:jwtToken})
   res.redirect('http://localhost:3000')
 }),
 
