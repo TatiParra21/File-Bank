@@ -1,12 +1,10 @@
-import bycrypt from 'bcrypt'
+import bcrypt from 'bcrypt'
 
 
 
-export const hashPassword = async(password:string)=>{
+export const hashPassword = async(password:string):Promise<string>=>{
     const saltRounds = 10 
-    const hashedPass = bycrypt.hash(password, saltRounds, (error,hash)=>{
-        if (error) throw error
-        else return hash
-    })
+    const hashedPass = bcrypt.hash(password, saltRounds)
+    
     return hashedPass
 }
