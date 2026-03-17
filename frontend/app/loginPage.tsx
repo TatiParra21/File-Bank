@@ -1,9 +1,10 @@
 "use client"
-import { JSX, type SubmitEventHandler } from "react"
+import { JSX, useState, type SubmitEventHandler } from "react"
 
-import { signUp, logIn } from "./functions/requests"
+import { signUp, logIn,resendVerificationMail } from "./functions/requests"
 export const LoginPage = (): JSX.Element => {
-    console.log("hello")
+    
+    const [errorMessage, setErrorMessage] = useState<string |null>(null)
     const sendData: SubmitEventHandler<HTMLFormElement> = async(e) => {
         console.log("sent dara")
         e.preventDefault()
@@ -16,9 +17,13 @@ export const LoginPage = (): JSX.Element => {
     if (action === "signup") {
          const data = await signUp(email, password)
         console.log("signup success", data)
+        setErrorMessage(data.message)
     } else if (action === "login") {
          const data = await logIn(email, password)
-         console.log("login success", data)
+        setErrorMessage(data.message)
+        }else if (action === "resend") {
+         const data = await resendVerificationMail(email, password)
+        setErrorMessage(data.message)
         }
         }  catch (error) {
         console.log("request failed", error)
@@ -36,7 +41,11 @@ export const LoginPage = (): JSX.Element => {
                 </label>
                 <button  type="submit" value="signup" name="action" className="px-4 py-2 mt-2 rounded-md bg-[#173631] text-[#FEEA16]">Sign up</button>
                 <button type="submit" value="login" name="action" className="px-4 py-2 mt-2 rounded-md bg-[#173631] text-[#FEEA16]">Log in</button>
+                {errorMessage =="Not authenticated" && <button type="submit" value="resend" name="action" className="px-4 py-2 mt-2 rounded-md bg-[#173631] text-[#FEEA16]">Resend verification email? </button>}
             </form>
+            {errorMessage &&<p>{errorMessage}</p> }
+
+            
     </section>
 
     )

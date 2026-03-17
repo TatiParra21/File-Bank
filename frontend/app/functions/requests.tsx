@@ -11,7 +11,7 @@ export const signUp =async(email :string, password:string)=>{
     })
     const response = await res.json()
     console.log(response, "HEW")
-
+    return response
     }catch(err){
         console.log(err, "err")
     }
@@ -27,10 +27,23 @@ export const logIn =async(email :string, password:string)=>{
     })
     const response = await res.json()
     console.log(response, "HEW")
+    return response
 }
 
-const verifyUserNow =async()=>{
+const verifyUserNow =async(email :string, password:string)=>{
    const  res = await fetch(`http://localhost:400/me`)
    const response = res.json()
    console.log(response, "respons")
+}
+
+export const resendVerificationMail =async(email :string, password:string)=>{
+    const data = {email,password}
+const res = await fetch(`http://localhost:400/file-bank/resend-verification`,{method:"POST",
+        headers:{
+            "Content-type": 'application/json'
+        },body: JSON.stringify(data)
+    })
+    const response = await res.json()
+    console.log(response, "HEW")
+    return response
 }

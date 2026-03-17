@@ -1,11 +1,12 @@
 import nodemailer from 'nodemailer'
+
 import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST as string,
   port: Number(process.env.SMTP_PORT),
-  secure: false, // true para 465, false para otros
+  secure: true, // true para 465, false para otros
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -24,8 +25,15 @@ export const sendVerificationEmail = async (email: string, token:string) => {
     html: `<b>Haz click aquí para verificar:</b> <a href="${url}">${url}</a>`,
   });
 
-  }catch(err){
-    console.log(err, "THEE ERROR")
+  } catch (err: any) {
+  // Common Nodemailer error codes: EAUTH, ECONNECTION, ETIMEDOUT
+  if (err.code === 'EAUTH') {
+    console.error("Authentication failed: Check SMTP_USER and SMTP_PASS.");
+  } else if (err.code === 'ESOCKET') {
+    console.error("Network issue: Check if the port/host is blocked by a firewall.");
+  } else {
+    console.error(`Email error: ${err.message}`, "THEE ERROR");
   }
+}
  
 };
