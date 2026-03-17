@@ -15,14 +15,13 @@ import { authMiddleWare } from './authMiddleWare';
 dotenv.config();
 
 router.post("/sign-up",async(req:Request,res:Response)=>{
- 
     const {email, password} = req.body
     const hashedPassword = await hashPassword(password)
     console.log(hashedPassword, "hass")
     const verificationToken = crypto.randomBytes(32).toString("hex");
     try{
-     const returned=   await prisma.users.create({
-  data: {
+    await prisma.users.create({
+    data: {
     email: email,
     password_hash: hashedPassword,
     verified: false,
@@ -38,10 +37,6 @@ sendVerificationEmail(email,verificationToken)
             else{
         console.error("unknown error", err)}
     }
-
-
-
-
      res.status(200).json({ message:"Account created verify by email"})
 })
 
@@ -68,7 +63,6 @@ router.post("/log-in", authMiddleWare, async(req:Request,res:Response)=>{
 })
 
 router.post("/resend-verification",async(req:Request,res:Response)=>{
- 
     const {email, password} = req.body  
     try{
      const user= await prisma.users.findUnique({where:{email:email}})
