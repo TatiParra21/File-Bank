@@ -28,9 +28,7 @@ router.post("/sign-up",async(req:Request,res:Response)=>{
     verification_code: verificationToken
   }
 })
-console.log("was it here", verificationToken)
-sendVerificationEmail(email,verificationToken)
-        
+sendVerificationEmail(email,verificationToken)       
     }catch(err){
         if(err instanceof Prisma.PrismaClientKnownRequestError)
         if(err.code == "P2002")return res.status(400).json({message: "An account with email Already exists",})

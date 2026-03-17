@@ -24,9 +24,7 @@ app.get("/verify",async(req:Request,res:Response)=>{
     verification_code: token
   }
 })
-    if (!user) {
-    return res.status(400).send("Invalid verification token")
-    }
+    if (!user) return res.status(400).send("Invalid verification token")   
     await prisma.users.update({
         where:{id:user.id},
         data:{
@@ -34,9 +32,8 @@ app.get("/verify",async(req:Request,res:Response)=>{
             verification_code: null
         }
     })
-  res.redirect('http://localhost:3000')
+   return res.redirect('http://localhost:3000')
 }),
-
 app.get("me",authMiddleWare,(req:Request,res:Response)=>{
     
      return res.status(200).json({

@@ -14,17 +14,17 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendVerificationEmail = async (email: string, token:string) => {
-  const url = `http://${process.env.FRONTEND_URL}/verify?token=${token}`
+  const url = `http://${process.env.FRONTEND_URL}/verify?token=${encodeURIComponent(token)}`
 
   console.log("did we get here")
   try{
-     await transporter.sendMail({
-    from: '"Sistema Inventario" <no-reply@example.sa>',
+   const transport=   await transporter.sendMail({
+    from: `"Sistema Inventario" <${process.env.SMTP_USER}>`,
     to: email,
     subject: "Verifica tu cuenta",
     html: `<b>Haz click aquí para verificar:</b> <a href="${url}">${url}</a>`,
   });
-
+console.log(transport, "transport")
   } catch (err: any) {
   // Common Nodemailer error codes: EAUTH, ECONNECTION, ETIMEDOUT
   if (err.code === 'EAUTH') {
