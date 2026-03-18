@@ -38,7 +38,7 @@ sendVerificationEmail(email,verificationToken)
      res.status(200).json({ message:"Account created verify by email"})
 })
 
-router.post("/log-in", authMiddleWare, async(req:Request,res:Response)=>{   
+router.post("/log-in", async(req:Request,res:Response)=>{   
     const {email, password} = req.body
     const user = await prisma.users.findUnique({where:{email:email, verified: true}})
    if (!user || !(await bcrypt.compare(password, user.password_hash))) {
@@ -57,7 +57,7 @@ router.post("/log-in", authMiddleWare, async(req:Request,res:Response)=>{
         sameSite: "lax",
         secure: false, // true in production (https)
   })
-     res.status(200).json({authorized:true})
+    return res.status(200).json({authorized:true})
 })
 
 router.post("/resend-verification",async(req:Request,res:Response)=>{
